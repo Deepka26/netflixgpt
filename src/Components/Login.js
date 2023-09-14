@@ -2,9 +2,16 @@ import React, { useState ,useRef} from "react";
 import Header from "./Header";
 import netflixbg from "../Components/Assets/netflixbg.jpg";
 import CheckValidData from "../Utils/Validate"
-
+import {  createUserWithEmailAndPassword } from "firebase/auth";
+import {auth} from "../Utils/Firebase"
+import {  signInWithEmailAndPassword,updateProfile } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {addUser} from "../Utils/UserSlice"
 
 const Login = () => {
+  const dispatch=useDispatch()
+  const navigate =useNavigate()
   const [isSignIn, setIsSignIn] = useState(true);
   const [errorMessage,setErrorMessage]=useState(null)
   const email=useRef(null)
@@ -14,11 +21,51 @@ const Login = () => {
     setIsSignIn(!isSignIn);
   };
   const onHandleButtonClick=()=>{
-    console.log(email,password)
+    
     const validationMessage=CheckValidData(email.current.value,password.current.value)
     setErrorMessage(validationMessage)
-    console.log(validationMessage)
+    //Sign Up logic
+    if(!isSignIn)
+    {
+      createUserWithEmailAndPassword(auth, email.current.value,password.current.value)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        updateProfile(user, {
+          displayName: name.current.value,
+        }).then(() => {
+          navigate("/browse")
+          const {uid,email,displayName} =auth.currentUser;
+      dispatch(addUser({uid:uid,email:email,displayName:displayName}))
+        }).catch((error) => {
+         
+        });
+        console.log(user,"user")
+       
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setErrorMessage(errorCode +" "+ errorMessage)
+       
+      });
+    } 
+    //Sign In logic
+    else{
+      signInWithEmailAndPassword(auth, email.current.value, password.current.value)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        navigate("/browse")
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setErrorMessage(errorCode+" "+errorMessage)
+      });
+    }
   } 
+  console.log(isSignIn)
    return (
     <div>
       <Header />
