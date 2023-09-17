@@ -34,13 +34,13 @@ const Login = () => {
         updateProfile(user, {
           displayName: name.current.value,
         }).then(() => {
-          navigate("/browse")
+         
           const {uid,email,displayName} =auth.currentUser;
       dispatch(addUser({uid:uid,email:email,displayName:displayName}))
         }).catch((error) => {
          
         });
-        console.log(user,"user")
+       
        
       })
       .catch((error) => {
@@ -56,7 +56,7 @@ const Login = () => {
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-        navigate("/browse")
+       
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -86,7 +86,7 @@ const Login = () => {
                   name="email"
                   id="email"
                   placeholder="Name"
-                  className="p-2 my-2 outline-none bg-gray-700 rounded"
+                  className="p-2 my-2 outline-none bg-gray-700 rounded text-white"
                 />
               )}
               
@@ -96,7 +96,7 @@ const Login = () => {
                 name="email"
                 id="email"
                 placeholder="Email address"
-                className="p-2 my-2 outline-none bg-gray-700 rounded"
+                className="p-2 my-2 outline-none bg-gray-700 rounded text-white"
               />
                <p className="text-red-600 text-xs ">{errorMessage}</p>
               <input
@@ -104,7 +104,7 @@ const Login = () => {
                 type="password"
                 name="password"
                 id="password"
-                className="p-2 my-2 bg-gray-700 outline-none rounded "
+                className="p-2 my-2 bg-gray-700 outline-none rounded text-white "
                 placeholder="Password"
               />
             </div>
