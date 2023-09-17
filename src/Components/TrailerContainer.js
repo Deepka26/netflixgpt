@@ -18,10 +18,10 @@ const TrailerContainer = ({ movieId }) => {
          
            setTrailerKey(trailer[0]?.key)
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err)); 
   }, []);
   return (
-    <div className="w-scrren relative z-0">
+    <div className="w-[100vw]">
       <iframe
         src={"https://www.youtube.com/embed/"+trailerKey+"?&autoplay=1&mute=1"}
         className="w-screen h-screen"
