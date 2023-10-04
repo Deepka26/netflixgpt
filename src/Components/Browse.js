@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react'
 import Header from './Header'
 import { API_OPTIONS } from '../Utils/Constants'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addNowPlayingMovies } from '../Utils/moviesSlice'
 import MainContainer from './MainContainer'
 import SecondaryContainer from './SecondaryContainer'
 import usePopularMovies from '../Utils/Hooks/usePopularMovies'
 import useTrendingMovies from '../Utils/Hooks/UseTrendingMovies'
+import GptSearch from './GptSearch'
 
 const Browse = () => {
+  const showGptSearch=useSelector((store)=>store.gpt.showGptSearch)
 const dispatch=useDispatch()
   usePopularMovies()
   useTrendingMovies()
@@ -23,8 +25,16 @@ const dispatch=useDispatch()
   return (
     <div>
      <Header/>
-     <MainContainer/>
-     <SecondaryContainer/>
+
+    {showGptSearch ? <GptSearch/> :
+    
+    <>
+    <MainContainer/>
+    <SecondaryContainer/>
+    </>
+    } 
+     
+    
      
     </div>
   )
